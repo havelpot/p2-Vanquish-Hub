@@ -13,6 +13,15 @@ import { LoginComponent } from './login/login.component';
 import { FormsModule } from '@angular/forms';
 import { RegisterComponent } from './register/register.component';
 import { CanvasComponent } from './canvas/canvas.component';
+import { OktaAuthModule, OktaCallbackComponent, OktaConfig, OKTA_CONFIG } from '@okta/okta-angular';
+import { OktaAuth } from '@okta/okta-auth-js';
+
+
+export const oktaAuth = new OktaAuth({
+  issuer: 'https://${dev-90042899.okta.com}/oauth2/default',
+  clientId: '${0oa59q9qz5BHymi7r5d7}',
+  redirectUri: window.location.origin + '/login/callback'
+});
 
 @NgModule({
   declarations: [
@@ -33,6 +42,7 @@ import { CanvasComponent } from './canvas/canvas.component';
     HttpClientModule,
     BrowserModule,
     AppRoutingModule,
+    OktaAuthModule,
     FormsModule
   ],
   exports:[
@@ -40,7 +50,7 @@ import { CanvasComponent } from './canvas/canvas.component';
     ArtWorkComponent
   
   ],
-  providers: [ArtworkService],
+  providers: [ArtworkService, {OKTA_CONFIG, useValue:{oktaAuth}}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
